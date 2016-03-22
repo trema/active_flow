@@ -11,6 +11,12 @@ Given(/^Open vSwitch \(dpid = 0x(.+)\) が起動している$/) do |dpid|
 end
 # rubocop:enable LineLength
 
+Given(/^次の仮想ネットワーク設定ファイルで phut を起動する$/) do |config|
+  @config_file = 'phut.conf'
+  step %(a file named "#{@config_file}" with:), config
+  step %(I successfully run `phut run -L. -P. -S. #{@config_file}`)
+end
+
 Given(/^次のテーブルを定義:$/) do |code|
   ActiveFlow.module_eval code
 end
@@ -59,3 +65,9 @@ Then(/^Open vSwitch \(dpid = 0x(.+)\) に次の (\d+) つのフローエント�
   end
 end
 # rubocop:enable LineLength
+
+Then(/^phut を停止する$/) do
+  if @config_file
+    step %(I successfully run `phut -v stop -L. -P. -S. #{@config_file}`)
+  end
+end
