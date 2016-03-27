@@ -9,7 +9,7 @@
         table_id 3
       end
       """
-    もし 次のテーブルを定義:
+    かつ 次のテーブルを定義:
       """
       class Classifier < ActiveFlow::Base
         table_id 1
@@ -21,9 +21,12 @@
                         priority: 100,
                         ether_type: IPV4,
                         instructions: GotoTable.new(RoutingTable))
-      Classifier.all[0]
       """
-    ならば 以下のとおりのフィールドと値になっている
+    もし 次のコードを実行:
+      """
+      Classifier.all.first
+      """
+    ならば Open vSwitch (dpid = 0x1) から次のフローエントリが取得できる
       | field      | value        |
       | table_id   | 1            |
       | priority   | 100          |
